@@ -1,5 +1,5 @@
 const redis = require('redis');
-import { logger } from "../main";
+import { logger, Redis } from "../main";
 import getConfig from "./config";
 
 
@@ -23,13 +23,11 @@ const connectionCallback = async () =>
     logger.info("redis data :: ", redisConfig);
 
     const client = redis.createClient(redisConfig);
-    const pubClient = client;
-    const subClient = pubClient.duplicate();
 
     client.on("ready", () => {
       logger.info("Redis connected successfully.");
-      
-      connectionsMap = { client, pubClient, subClient };
+      Redis.init(client);
+      connectionsMap = { client };
       resolve(connectionsMap);
     });
 

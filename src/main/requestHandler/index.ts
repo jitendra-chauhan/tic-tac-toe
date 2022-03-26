@@ -1,4 +1,5 @@
 import logger from "../logger";
+import redis from "../redis";
 
 async function requestHandler(socket: any, body: any) {
   if (!socket) {
@@ -23,6 +24,7 @@ async function requestHandler(socket: any, body: any) {
     logger.info("event ::", body.en, data);
     switch (body.en) {
       case "signUp": // SP
+        redis.commands.setValueInKey("testing", body.data.msg);
         socket.emit("res", body);
         break;
       default:
