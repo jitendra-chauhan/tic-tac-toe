@@ -1,7 +1,9 @@
-import http from "./http";
+import server from "./http";
+import getConfig from "./config";
 
 const exportObject = {
-  http,
+  server,
+  getConfig
 };
 
 export = exportObject;
