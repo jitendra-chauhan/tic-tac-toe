@@ -1,10 +1,11 @@
 const SocketIO = require("socket.io");
+import { logger, requestHandler } from "../main";
 import server from "./http";
 
 let socketClient: any = null;
 
 function socketConnnectionHandle(client: any) {
-  console.log("connected socket");
+  logger.debug("connected socket");
 
   // client.conn is default menthod for ping pong request
   client.conn.on("ping", (packet: any) => {
@@ -15,20 +16,27 @@ function socketConnnectionHandle(client: any) {
    * error event handler
    */
   client.on("error", (error: any) =>
-    console.log("Socket : client error......,", error)
+    logger.error("Socket : client error......,", error)
   );
 
   /**
    * disconnect request handler
    */
   client.on("disconnect", () => {
-    console.log("DISCONNECT user : ", client.id);
+    logger.info("DISCONNECT user : ", client.id);
+  });
+
+  /**
+   * get Event request handler
+   */
+  client.on("req", (socket: any) => {
+    requestHandler(client, socket);
   });
 }
 
 function createSocketServer() {
-    console.log('===> call socket <===');
-    
+  logger.debug("===> call socket <===");
+
   const socketConfig = {
     transports: ["websocket", "polling"],
     pingInterval: 1000,
@@ -36,7 +44,7 @@ function createSocketServer() {
     allowEIO3: true,
   };
 
-  socketClient = SocketIO(server, socketConfig).of('/socket');
+  socketClient = SocketIO(server, socketConfig).of("/socket");
 
   socketClient.on("connection", socketConnnectionHandle);
 
