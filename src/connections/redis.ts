@@ -1,5 +1,7 @@
 const redis = require('redis');
+import { logger } from "../main";
 import getConfig from "./config";
+
 
 let connectionsMap: any = null;
 
@@ -18,21 +20,21 @@ const connectionCallback = async () =>
 
     if (REDIS_PASSWORD !== "") redisConfig.password = REDIS_PASSWORD;
 
-    console.log("redis data :: ", redisConfig);
+    logger.info("redis data :: ", redisConfig);
 
     const client = redis.createClient(redisConfig);
     const pubClient = client;
     const subClient = pubClient.duplicate();
 
     client.on("ready", () => {
-      console.log("Redis connected successfully.");
+      logger.info("Redis connected successfully.");
       
       connectionsMap = { client, pubClient, subClient };
       resolve(connectionsMap);
     });
 
     client.on("error", (error: any) => {
-      console.log("Redis Client error:", error);
+      logger.error("Redis Client error:", error);
       reject(error);
     });
   });
