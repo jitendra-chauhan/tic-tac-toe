@@ -1,5 +1,4 @@
 const SocketIO = require("socket.io");
-import socketIO  from "socket.io";
 import server from "./http";
 
 let socketClient: any = null;
