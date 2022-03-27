@@ -1,6 +1,6 @@
 import { EVENTS } from "../../constants";
 import logger from "../logger";
-import signUp from "../signUp";
+import { signUpHelper } from "./helper";
 
 async function requestHandler(socket: any, body: any) {
   if (!socket) {
@@ -25,7 +25,7 @@ async function requestHandler(socket: any, body: any) {
     logger.info("event ::", body.en, data);
     switch (body.en) {
       case EVENTS.SIGN_UP_SOCKET_EVENT: // SP
-        await signUp(body.data, socket);
+        await signUpHelper(body, socket);
         break;
       default:
         break;

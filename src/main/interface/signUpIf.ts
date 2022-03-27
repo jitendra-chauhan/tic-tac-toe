@@ -1,10 +1,12 @@
 export interface signUpIf {
   name: string;
+  isBot:boolean;
 }
 export interface userDetailIf {
-    name: string;
-    userId: number;
-    socketId: string;
+  name: string;
+  userId: number;
+  socketId: string;
+  isBot:boolean;
 }
 
 export interface signUpFormatIf {
@@ -12,3 +14,6 @@ export interface signUpFormatIf {
     userId: number;
 }
 
+export interface signUpRequestIf {
+  data: signUpIf;
+}

@@ -15,6 +15,7 @@ const createUser = async (
     name: data.name,
     userId: getRandomeNumber(),
     socketId: socket.id,
+    isBot: data.isBot,
   };
   await setUser(userDetail.userId, userDetail);
   return userDetail;

@@ -22,11 +22,11 @@ class Service {
 
   /* list queries */
   async pushIntoQueue(key: any, element: any) {
-    return this.command.QUEUE.push(`PT:${key}`, JSON.stringify(element));
+    return this.command.QUEUE.push(key, JSON.stringify(element));
   }
 
   async popFromQueue(key: any) {
-    const resStr = await this.command.QUEUE.pop(`PT:${key}`);
+    const resStr = await this.command.QUEUE.pop(key);
     return JSON.parse(resStr);
   }
 

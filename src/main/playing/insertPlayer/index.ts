@@ -1,6 +1,6 @@
 import { EVENTS, PLAY_STATE } from "../../../constants";
 import eventEmitter from "../../eventEmitter";
-import { formatGameTableInfo } from "../../formatResponse";
+import { formatGameTableInfo, formatJoinTableInfo } from "../../formatResponse";
 import { playingTableIf } from "../../interface/playingTableIf";
 import { userDetailIf } from "../../interface/signUpIf";
 import logger from "../../logger";
@@ -8,6 +8,7 @@ import { getRandomeNumber } from "../../utile/commanFunction";
 import {
   getTableData,
   popTableFromQueue,
+  pushTableInQueue,
   setTableData,
 } from "../../utile/redisCommand";
 
@@ -54,11 +55,11 @@ const insertPlayerInTable = async (
         tableDetail.seats[seatKey].name = userDetail.name;
         tableDetail.seats[seatKey].userId = userDetail.userId;
         tableDetail.seats[seatKey].seatIndex = i;
-        tableDetail.seats[seatKey].isBot = true;
+        tableDetail.seats[seatKey].isBot = userDetail.isBot;
+        tableDetail.totalPlayers += 1;
+        seatIndex = i;
+        break;
       }
-      tableDetail.totalPlayers += 1;
-      seatIndex = i;
-      break;
     }
   }
   if (seatIndex !== -1) {
@@ -68,22 +69,50 @@ const insertPlayerInTable = async (
 };
 
 const insertPlayer = async (userDetail: userDetailIf, socket: any) => {
+  const { robotSignUp } = await import("../../robot");
+
   try {
     let tableId: number | null = await popTableFromQueue(); // find avalible table
     if (!tableId) {
-        // create new table
+      // create new table
       tableId = await createTable();
     }
     const seatIndex = await insertPlayerInTable(userDetail, tableId);
     const tableDetail = await getTableData(tableId);
 
-    const eventData = await formatGameTableInfo(tableDetail,seatIndex);
+    const eventData = await formatGameTableInfo(tableDetail, seatIndex);
 
     // send Get_Table_Info Event
     eventEmitter.emit(EVENTS.GET_TABLE_INFO_SOCKET_EVENT, {
-        socket,
-        data: eventData,
-      });
+      socket,
+      data: eventData,
+    });
+
+    const joinTableEventData = await formatJoinTableInfo(
+      seatIndex,
+      tableDetail
+    );
+
+    // send JOIN_TABLE event
+    eventEmitter.emit(EVENTS.JOIN_TABLE_SOCKET_EVENT, {
+      tableId,
+      data: joinTableEventData,
+    });
+
+    // join player in socket room
+    eventEmitter.emit(EVENTS.ADD_PLAYER_IN_TABLE_ROOM, {
+      socket,
+      data: { tableId },
+    });
+
+    socket.userData.tableId = tableId;
+
+    if (tableDetail.totalPlayers !== tableDetail.maxPlayers) {
+      // push Table In Queue
+      await pushTableInQueue(tableId);
+      robotSignUp();
+    } else if (tableDetail.totalPlayers !== tableDetail.maxPlayers) {
+    }
   } catch (error) {
     logger.error("insertPlayer : Error :: ", error);
   }
