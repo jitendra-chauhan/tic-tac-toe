@@ -1,12 +1,11 @@
-const redis = require('redis');
-import { logger, Redis } from "../main";
+const redis = require("redis");
 import getConfig from "./config";
-
 
 let connectionsMap: any = null;
 
 const connectionCallback = async () =>
   new Promise(async (resolve, reject) => {
+    const { logger, Redis } = await import("../main");
     const { REDIS_HOST, REDIS_PASSWORD, REDIS_PORT } = await getConfig();
 
     const redisConfig: {

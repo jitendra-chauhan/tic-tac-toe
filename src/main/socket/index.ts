@@ -1,5 +1,5 @@
-import logger from "../logger";
 import { socket } from "../../connections";
+import logger from "../logger";
 
 async function sendEventToClient(client: any, data: any) {
   try {
@@ -7,8 +7,8 @@ async function sendEventToClient(client: any, data: any) {
 
     logger.debug("SEND EVENT TO CLIENT: ", data);
 
-    if (typeof client !== "string") client.emit(data.en, { data });
-    else socketClient.to(client).emit(data.en, { data });
+    if (typeof client !== "string") client.emit('res', { data });
+    else socketClient.to(client).emit('res', { data });
   } catch (error) {
     logger.error("sendEventToClient :: error :: ", error);
   }

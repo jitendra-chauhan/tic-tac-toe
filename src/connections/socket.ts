@@ -1,11 +1,12 @@
 const SocketIO = require("socket.io");
-import { logger, requestHandler } from "../main";
 import server from "./http";
+import { logger, requestHandler } from "../main";
+import { EVENTS } from "../constants";
 
 let socketClient: any = null;
 
 function socketConnnectionHandle(client: any) {
-  logger.debug("connected socket");
+  logger.info("connected socket",EVENTS.SIGN_UP_SOCKET_EVENT);
 
   // client.conn is default menthod for ping pong request
   client.conn.on("ping", (packet: any) => {
@@ -35,7 +36,6 @@ function socketConnnectionHandle(client: any) {
 }
 
 function createSocketServer() {
-  logger.debug("===> call socket <===");
 
   const socketConfig = {
     transports: ["websocket", "polling"],
