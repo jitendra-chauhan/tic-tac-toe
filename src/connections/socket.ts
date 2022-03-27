@@ -1,12 +1,12 @@
 const SocketIO = require("socket.io");
 import server from "./http";
-import { logger, requestHandler } from "../main";
 import { EVENTS } from "../constants";
 
 let socketClient: any = null;
 
-function socketConnnectionHandle(client: any) {
-  logger.info("connected socket",EVENTS.SIGN_UP_SOCKET_EVENT);
+async function socketConnnectionHandle(client: any) {
+  const { logger, requestHandler } = await import("../main");
+  logger.info("connected socket");
 
   // client.conn is default menthod for ping pong request
   client.conn.on("ping", (packet: any) => {

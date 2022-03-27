@@ -1,12 +1,17 @@
 import { EVENTS } from "../../constants";
 import logger from "../logger";
 import eventEmitter from "../eventEmitter";
-import { signUpIf, userDetail } from "../interface/signUpIf";
+import { signUpIf, userDetailIf } from "../interface/signUpIf";
 import { setUser } from "../utile/redisCommand";
 import { getRandomeNumber } from "../utile/commanFunction";
+import insertPlayer from "../playing/insertPlayer";
+import { formatSingUpInfo } from "../formatResponse";
 
-const createUser = async (data: signUpIf, socket: any): Promise<userDetail> => {
-  const userDetail: userDetail = {
+const createUser = async (
+  data: signUpIf,
+  socket: any
+): Promise<userDetailIf> => {
+  const userDetail: userDetailIf = {
     name: data.name,
     userId: getRandomeNumber(),
     socketId: socket.id,
@@ -20,11 +25,14 @@ const signUp = async (data: signUpIf, socket: any) => {
     const userData = await createUser(data, socket);
 
     socket.userData = userData;
-    eventEmitter.on(EVENTS.SIGN_UP_SOCKET_EVENT, {
-        socket,
-        data : userData
+    const eventData = await formatSingUpInfo(userData);
+
+    eventEmitter.emit(EVENTS.SIGN_UP_SOCKET_EVENT, {
+      socket,
+      data: eventData,
     });
 
+    insertPlayer(userData, socket);
   } catch (error) {
     logger.error(`signUp : error :: ${error}`);
   }

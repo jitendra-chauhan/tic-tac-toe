@@ -26,7 +26,6 @@ async function requestHandler(socket: any, body: any) {
     switch (body.en) {
       case EVENTS.SIGN_UP_SOCKET_EVENT: // SP
         await signUp(body.data, socket);
-        socket.emit("res", body);
         break;
       default:
         break;
