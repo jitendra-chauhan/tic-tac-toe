@@ -11,6 +11,7 @@ import {
   pushTableInQueue,
   setTableData,
 } from "../../utile/redisCommand";
+import scheduler from "../../scheduler";
 
 // create playing table
 const createTable = async () => {
@@ -111,7 +112,23 @@ const insertPlayer = async (userDetail: userDetailIf, socket: any) => {
       // push Table In Queue
       await pushTableInQueue(tableId);
       robotSignUp();
-    } else if (tableDetail.totalPlayers !== tableDetail.maxPlayers) {
+    } else if (tableDetail.totalPlayers === tableDetail.maxPlayers) {
+      eventEmitter.emit(EVENTS.GAME_START_SOCKET_EVENT, {
+        tableId,
+        data: {
+          time: 5,
+        },
+      });
+
+      scheduler.startJob.GameStartTimerQueue({
+        timer: 6 * 1000,
+        jobId: `${tableId}`,
+        tableDetail,
+      });
+
+      tableDetail.tableState = PLAY_STATE.GAME_TIMER_START;
+
+      await setTableData(tableDetail);
     }
   } catch (error) {
     logger.error("insertPlayer : Error :: ", error);

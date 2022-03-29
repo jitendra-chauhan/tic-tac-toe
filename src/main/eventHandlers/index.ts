@@ -1,5 +1,5 @@
 import eventEmitter from "../eventEmitter";
-import { EVENTS } from "../../constants";
+import { EVENTS, SCHEDULER } from "../../constants";
 import { addClientInRoom, sendEventToClient, sendEventToRoom } from "../socket";
 
 async function singUpEvent(payload: any) {
@@ -39,3 +39,15 @@ function addPlayInRoomEvent(payload: any) {
   addClientInRoom(socket, data.tableId);
 }
 eventEmitter.on(EVENTS.ADD_PLAYER_IN_TABLE_ROOM,addPlayInRoomEvent);
+
+function gameStartEvent(payload: any) {
+  const { tableId, data } = payload;
+  const responseData = {
+    en: EVENTS.GAME_START_SOCKET_EVENT,
+    data,
+  };
+  sendEventToRoom(tableId, responseData);
+}
+eventEmitter.on(EVENTS.GAME_START_SOCKET_EVENT, gameStartEvent)
+
+

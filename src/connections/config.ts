@@ -3,6 +3,13 @@ require("dotenv").config();
 const { env } = process;
 let configData: any = null;
 
+interface config {
+  SERVER_PORT:string
+  REDIS_HOST:string
+  REDIS_PASSWORD:string
+  REDIS_PORT:number
+}
+
 function getEnvConfig() {
   const port = "PORT";
   const redisHost = "REDIS_HOST";
@@ -17,11 +24,11 @@ function getEnvConfig() {
   });
 }
 
-async function getConfigJson() {
-  configData = await getEnvConfig();
+function getConfigJson() {
+  configData = getEnvConfig();
   return configData;
 }
 
-const getConfig = async () => configData || getConfigJson();
+const getConfig = () : config  => configData || getConfigJson();
 
 export = getConfig;

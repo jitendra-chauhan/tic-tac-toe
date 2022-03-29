@@ -4,7 +4,7 @@ import eventEmitter from "../eventEmitter";
 import { signUpIf, userDetailIf } from "../interface/signUpIf";
 import { setUser } from "../utile/redisCommand";
 import { getRandomeNumber } from "../utile/commanFunction";
-import insertPlayer from "../playing/insertPlayer";
+import { insertPlayer } from "../playing";
 import { formatSingUpInfo } from "../formatResponse";
 
 const createUser = async (
