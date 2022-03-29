@@ -3,7 +3,10 @@ import { usersSeatsIf } from "../../interface/playingTableIf";
 import { getRandomeNumber } from "../../utile/commanFunction";
 
 // get next player turn Id
-async function getNextPlayer(seats: usersSeatsIf, currentTurn: number | null):Promise<number> {
+async function getNextPlayer(
+  seats: usersSeatsIf,
+  currentTurn: number | null
+): Promise<{ userTurnId: number; userSeatIndex: number }> {
   try {
     logger.info(
       "getNextPlayer : seats :: ",
@@ -24,7 +27,10 @@ async function getNextPlayer(seats: usersSeatsIf, currentTurn: number | null):Pr
     } else {
       nextIndex = getRandomeNumber(0, 1);
     }
-    return seats[`s${nextIndex}`].userId;
+    return {
+      userTurnId: seats[`s${nextIndex}`].userId,
+      userSeatIndex: nextIndex,
+    };
   } catch (error) {
     logger.error(`getNextPlayer currentTurn: ${currentTurn} :: `, seats, error);
     throw error;

@@ -50,4 +50,12 @@ function gameStartEvent(payload: any) {
 }
 eventEmitter.on(EVENTS.GAME_START_SOCKET_EVENT, gameStartEvent)
 
-
+function startTurnEvent(payload: any) {
+  const { tableId, data } = payload;
+  const responseData = {
+    en: EVENTS.START_TURN_SOCKET_EVENT,
+    data,
+  };
+  sendEventToRoom(tableId, responseData);
+}
+eventEmitter.on(EVENTS.START_TURN_SOCKET_EVENT,startTurnEvent)
