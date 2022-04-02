@@ -5,3 +5,9 @@ export interface GameStartTimerIf {
   jobId: string;
   tableDetail: playingTableIf;
 }
+
+export interface takeTurnTimerIf {
+  timer: number;
+  jobId: string;
+  tableDetail: playingTableIf;
+}

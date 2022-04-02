@@ -70,3 +70,14 @@ function showTakeTurnEvent(payload: any) {
 }
 
 eventEmitter.on(EVENTS.SHOW_TAKE_TURN_SOCKET_EVENT, showTakeTurnEvent);
+
+function winnerEvent(payload: any) {
+  const { tableId, data } = payload;
+  const responseData = {
+    en: EVENTS.WINNER_SOCKET_EVENT,
+    data,
+  };
+  sendEventToRoom(tableId, responseData);
+}
+
+eventEmitter.on(EVENTS.WINNER_SOCKET_EVENT, winnerEvent);

@@ -34,7 +34,7 @@ const createTable = async () => {
       "21": "",
       "22": "",
     },
-    symbol: ["x", "o"],
+    symbol: ["X", "O"],
   };
 
   const tableId = await setTableData(tableData);

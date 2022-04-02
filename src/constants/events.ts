@@ -7,6 +7,7 @@ const exportObject = Object.freeze({
     START_TURN_SOCKET_EVENT:'START_TURN',
     TAKE_TURN_SOCKET_EVENT:'TAKE_TURN',
     SHOW_TAKE_TURN_SOCKET_EVENT:'SHOW_TAKE_TURN',
+    WINNER_SOCKET_EVENT:'WINNER',
 })
 
 export = exportObject;

@@ -3,11 +3,16 @@ import eventEmitter from "../../eventEmitter";
 import logger from "../../logger";
 import { getTableData, setTableData } from "../../utile/redisCommand";
 import { boardAction } from "../helper";
+import changeTurn from "./changeTurn";
+import scheduler from "../../scheduler";
+import { takeTurn } from "../../interface/signUpIf";
 
-const takeTurn = async (data: any, socket: any) => {
+const takeTurn = async (data: takeTurn, socket: any) => {
   const { tableId, userId } = socket.userData;
   const { seatIndex, boardIndex } = data;
   try {
+    // cance timer
+    await scheduler.cancelJob.turnStartTimerCancel(tableId);
     let tableDetail = await getTableData(tableId);
 
     if (tableDetail.currentTurn && tableDetail.currentTurn !== userId)
@@ -29,12 +34,14 @@ const takeTurn = async (data: any, socket: any) => {
 
     eventEmitter.emit(EVENTS.SHOW_TAKE_TURN_SOCKET_EVENT, {
       tableId: tableDetail.id,
-      data:{
-          index: seatIndex,
-          boardIndex,
-          isTimeOut:false
-      }
+      data: {
+        index: seatIndex,
+        boardIndex,
+        isTimeOut: false,
+      },
     });
+
+    changeTurn(tableDetail);
   } catch (error) {
     logger.error("takeTurn :: Error :", error, data);
   }

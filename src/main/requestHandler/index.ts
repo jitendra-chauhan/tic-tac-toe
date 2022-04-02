@@ -1,6 +1,6 @@
 import { EVENTS } from "../../constants";
 import logger from "../logger";
-import { signUpHelper } from "./helper";
+import { signUpHelper, takeTurnHelper } from "./helper";
 
 async function requestHandler(socket: any, body: any) {
   if (!socket) {
@@ -24,8 +24,11 @@ async function requestHandler(socket: any, body: any) {
 
     logger.info("event ::", body.en, data);
     switch (body.en) {
-      case EVENTS.SIGN_UP_SOCKET_EVENT: // SP
+      case EVENTS.SIGN_UP_SOCKET_EVENT: // SIGN_UP
         await signUpHelper(body, socket);
+        break;
+      case EVENTS.TAKE_TURN_SOCKET_EVENT: // TAKE_TURN
+        await takeTurnHelper(body, socket);
         break;
       default:
         break;

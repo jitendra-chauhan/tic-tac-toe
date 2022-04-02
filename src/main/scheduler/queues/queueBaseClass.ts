@@ -21,4 +21,4 @@ class QueueBaseClass {
   }
 }
 
-export default QueueBaseClass
+export default QueueBaseClass;
