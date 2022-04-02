@@ -5,7 +5,9 @@ export interface playingTableIf {
   totalPlayers: number;
   maxPlayers: number;
   currentTurn: number | null;
-  bord: any;
+  turnCount: number;
+  board: any;
+  symbol: string[];
 }
 interface playarDetailIf {
   seatIndex: number;
@@ -27,9 +29,9 @@ export interface userPlayingSeatIf {
   seatIndex: number;
   isBot: boolean;
 }
-export interface usersSeatsIf extends IObjectKeys{
-  s0:userPlayingSeatIf,
-  s1:userPlayingSeatIf,
-  s2:userPlayingSeatIf,
-  s3:userPlayingSeatIf,
+export interface usersSeatsIf extends IObjectKeys {
+  s0: userPlayingSeatIf;
+  s1: userPlayingSeatIf;
+  s2: userPlayingSeatIf;
+  s3: userPlayingSeatIf;
 }

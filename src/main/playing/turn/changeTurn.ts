@@ -8,12 +8,7 @@ const gameStart = async (data: GameStartTimerIf) => {
   const { tableDetail } = data;
 
   try {
-    const currentPlayers = Object.keys(tableDetail.seats).filter(
-      (ele) => tableDetail.seats[ele].userId
-    ).length;
-
-    if (currentPlayers === tableDetail.maxPlayers) {
-      tableDetail.tableState = PLAY_STATE.PLAYING_START;
+   // checkWinner
       const { userTurnId, userSeatIndex } = await getNextPlayer(
         tableDetail.seats,
         null
@@ -27,9 +22,7 @@ const gameStart = async (data: GameStartTimerIf) => {
           index: userSeatIndex,
         },
       });
-    } else {
-      logger.warn("gameStart : out of playare :", currentPlayers);
-    }
+    
   } catch (error) {
     logger.error("gameStart : Error :: ", error, tableDetail);
   }

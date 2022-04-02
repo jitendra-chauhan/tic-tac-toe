@@ -22,7 +22,8 @@ const createTable = async () => {
     totalPlayers: 0,
     maxPlayers: 2,
     currentTurn: null,
-    bord: {
+    turnCount:0,
+    board: {
       "00": "",
       "01": "",
       "02": "",
@@ -33,6 +34,7 @@ const createTable = async () => {
       "21": "",
       "22": "",
     },
+    symbol: ["x", "o"],
   };
 
   const tableId = await setTableData(tableData);
