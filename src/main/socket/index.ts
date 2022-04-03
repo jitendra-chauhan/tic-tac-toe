@@ -16,7 +16,7 @@ async function sendEventToClient(client: any, data: any) {
 
 async function sendEventToRoom(roomId: any, data: any) {
   const socketClient: any = socket();
-
+  logger.debug("SEND EVENT TO ROOM : ", data);
   socketClient.to(roomId).emit('res', { data });
 }
 

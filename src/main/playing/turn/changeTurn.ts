@@ -11,12 +11,18 @@ const changeTurn = async (tableDetail: playingTableIf) => {
   try {
     const tableId = tableDetail.id;
     // checkWinner
-    // const promise = await Promise.all([checkWinnerdata(tableDetail.id)]);
     const winner: any = await checkWinnerdata(tableDetail.id);
+    logger.info("changeTurn :: Winner :", winner);
     if (winner.index === -2) {
       const { userTurnId, userSeatIndex } = await getNextPlayer(
         tableDetail.seats,
         tableDetail.currentTurn
+      );
+
+      logger.info(
+        "===> changeTurn <====userTurnId :",
+        userTurnId,
+        userSeatIndex
       );
       tableDetail.currentTurn = userTurnId;
       tableDetail.turnCount += 1;

@@ -26,6 +26,8 @@ async function getNextPlayer(
       logger.info("getNextPlayer : nextIndex :: ", nextIndex);
     } else {
       nextIndex = getRandomeNumber(0, 1);
+
+      logger.info("getNextPlayer : ran :: ", nextIndex);
     }
     return {
       userTurnId: seats[`s${nextIndex}`].userId,

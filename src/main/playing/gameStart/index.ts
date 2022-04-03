@@ -4,6 +4,7 @@ import { GameStartTimerIf } from "../../interface/schedulerIf";
 import logger from "../../logger";
 import { getNextPlayer } from "../helper";
 import scheduler from "../../scheduler";
+import { setTableData } from "../../utile/redisCommand";
 
 const gameStart = async (data: GameStartTimerIf) => {
   const { tableDetail } = data;
@@ -19,9 +20,15 @@ const gameStart = async (data: GameStartTimerIf) => {
         tableDetail.seats,
         null
       );
+      logger.info(
+        "===> gameStart <====userTurnId :",
+        userTurnId,
+        userSeatIndex
+      );
       tableDetail.currentTurn = userTurnId;
       tableDetail.turnCount += 1;
 
+      await setTableData(tableDetail);
       eventEmitter.emit(EVENTS.START_TURN_SOCKET_EVENT, {
         tableId,
         data: {

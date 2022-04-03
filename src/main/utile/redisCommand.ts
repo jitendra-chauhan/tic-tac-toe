@@ -1,4 +1,5 @@
 import { playingTableIf } from "../interface/playingTableIf";
+import logger from "../logger";
 import Redis from "../redis";
 
 // User Detail
@@ -8,7 +9,7 @@ function setUser(userId: number, data: any) {
         const key = `USER:${userId}`;
         return Redis.commands.setValueInKeyWithExpiry(key, data);
     } catch (error) {
-        console.log('===> setUser <===',error)
+        logger.error('setUser :: Error :',error)
     }
 }
 

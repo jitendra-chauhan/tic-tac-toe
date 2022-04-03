@@ -12,18 +12,19 @@ const takeTurn = async (data: takeTurn, socket: any) => {
   const { seatIndex, boardIndex } = data;
   try {
     // cance timer
-    await scheduler.cancelJob.turnStartTimerCancel(tableId);
     let tableDetail = await getTableData(tableId);
 
     if (tableDetail.currentTurn && tableDetail.currentTurn !== userId)
       throw new Error(`current turn is not your turn ${userId}`);
 
-    const boardAvailable = await boardAction.checkBoardAvailable(
-      boardIndex,
-      tableDetail
-    );
-
-    if (!boardAvailable) throw new Error("board is not empty!");
+      await scheduler.cancelJob.turnStartTimerCancel(tableId);
+      
+      const boardAvailable = await boardAction.checkBoardAvailable(
+        boardIndex,
+        tableDetail
+        );
+        
+        if (!boardAvailable) throw new Error("board is not empty!");
 
     tableDetail = await boardAction.updateBoard(
       boardIndex,
