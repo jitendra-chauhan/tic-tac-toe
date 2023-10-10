@@ -9,7 +9,7 @@ const robotSignUp = () => {
         name:'Robot',
         isBot: true
     }
-    return signUp(data, socket).catch((e: any) => logger.error(e));
+    return signUp(data, socket).catch((e: any) =>  logger.error(e));
 }
 
 export = robotSignUp;
