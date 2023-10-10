@@ -23,7 +23,7 @@ const gameStart = async (data: GameStartTimerIf) => {
       logger.info(
         "===> gameStart <====userTurnId :",
         userTurnId,
-        userSeatIndex
+        userSeatIndex, " :: "
       );
       tableDetail.currentTurn = userTurnId;
       tableDetail.turnCount += 1;
