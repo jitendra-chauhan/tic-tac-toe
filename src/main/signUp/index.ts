@@ -17,6 +17,7 @@ const createUser = async (
     socketId: socket.id,
     isBot: data.isBot,
   };
+  
   await setUser(userDetail.userId, userDetail);
   return userDetail;
 };
