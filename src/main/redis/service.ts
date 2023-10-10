@@ -10,7 +10,7 @@ class Service {
     return this.command.KEY.set(key, JSON.stringify(obj));
   }
   /* set queries with expire time */
-  async setValueInKeyWithExpiry(key: any, obj: any, exp = 600) {
+  async setValueInKeyWithExpiry(key: any, obj: any, exp = 700) {
     return this.command.KEY.setex(key, exp, JSON.stringify(obj));
   }
 
